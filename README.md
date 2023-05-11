@@ -15,7 +15,8 @@ This is a React Native app for a chat application that allows users to chat with
 4. Create a Firebase project in your Firebase console.
 5. Copy the configuration object and paste it in the `firebaseConfig` object in the code.
 6. Enable Firestore and Storage services in the Firebase console.
-7. Run `npm start` to start the app.
+7. Run npx expo install
+8. npx expo start
 
 ## Usage
 
