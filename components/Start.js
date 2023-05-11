@@ -16,6 +16,7 @@ const Start = ({ navigation }) => {
 					name: text ? text : "User",
 					color: color ? color : "white",
 				});
+				Alert.alert("Signed in successfully!");
 			})
 			.catch((error) => {
 				Alert.alert("Unable to sign in, try again later.");
