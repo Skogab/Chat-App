@@ -1,16 +1,16 @@
-import { LogBox, Alert } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useNetInfo } from "@react-native-community/netinfo";
-import { useEffect, useState } from "react";
+import { Alert, StyleSheet } from "react-native";
 import { initializeApp } from "firebase/app";
 import { getFirestore, disableNetwork, enableNetwork } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Start from "./components/Start";
 import Chat from "./components/Chat";
+import { useNetInfo } from "@react-native-community/netinfo";
+import { useEffect } from "react";
+import { getStorage } from "firebase/storage";
 
-// Firebase configuration
+const Stack = createNativeStackNavigator();
+
 const firebaseConfig = {
 	apiKey: "AIzaSyBH0QOL_ICNQq0vPy8miFmhxTg4BdY8ksM",
 	authDomain: "chatapp-41ca4.firebaseapp.com",
@@ -20,29 +20,22 @@ const firebaseConfig = {
 	appId: "1:789129214199:web:c90df4278ce1ab38c27bf2",
 };
 
-// Create a new StackNavigator object
-const Stack = createNativeStackNavigator();
-
-// Initialize Firebase app and get references to Firestore and Storage
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Connection check and Alert
 const App = () => {
-	const connectionStatus = useNetInfo().isConnected;
-
-	// Use useEffect to check connection status and alert user if it changes
+	const connectionStatus = useNetInfo();
 	useEffect(() => {
-		if (connectionStatus === false) {
+		if (connectionStatus.isConnected === false) {
 			Alert.alert("Connection Lost!");
 			disableNetwork(db);
-		} else if (connectionStatus === true) {
+		} else if (connectionStatus.isConnected === true) {
 			enableNetwork(db);
 		}
-	}, [connectionStatus]);
+	}, [connectionStatus.isConnected]);
 
-	// Render the app using NavigationContainer and StackNavigator
 	return (
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName="Start">

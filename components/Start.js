@@ -1,18 +1,28 @@
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, ImageBackground, Alert } from "react-native";
+import {
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+	ImageBackground,
+	KeyboardAvoidingView,
+} from "react-native";
 import { getAuth, signInAnonymously } from "firebase/auth";
+import { Alert } from "react-native";
 
+// Define Start component
 const Start = ({ navigation }) => {
 	const [text, setText] = useState("");
 	const [color, setColor] = useState("");
-
 	const auth = getAuth();
 
+	// Function to sign in user anonymously using Firebase auth
 	const signInUser = () => {
 		signInAnonymously(auth)
 			.then((result) => {
 				navigation.navigate("Chat", {
-					id: result.user.uid,
+					userID: result.user.uid,
 					name: text ? text : "User",
 					color: color ? color : "white",
 				});
@@ -23,6 +33,7 @@ const Start = ({ navigation }) => {
 			});
 	};
 
+	// Render the UI of the Start component
 	return (
 		<ImageBackground
 			source={require("../assets/BackgroundImage.png")}
@@ -33,27 +44,29 @@ const Start = ({ navigation }) => {
 					<Text style={styles.title}>Chat App!</Text>
 				</View>
 				<View style={styles.subContainer}>
-					<TextInput placeholder="Enter your name" style={styles.input} onChangeText={setText} />
+					<TextInput placeholder="Your name" style={styles.input} onChangeText={setText} />
+
 					<Text>Choose Background Color</Text>
 					<View style={styles.radioButtonContainer}>
 						<TouchableOpacity
-							style={[styles.radioButton, { backgroundColor: "#ff5e5e" }]}
-							onPress={() => setColor("#ff5e5e")}></TouchableOpacity>
+							style={[styles.radioButton, { backgroundColor: "red" }]}
+							onPress={() => setColor("red")}></TouchableOpacity>
 						<TouchableOpacity
-							style={[styles.radioButton, { backgroundColor: "#69cfff" }]}
-							onPress={() => setColor("#69cfff")}></TouchableOpacity>
+							style={[styles.radioButton, { backgroundColor: "blue" }]}
+							onPress={() => setColor("blue")}></TouchableOpacity>
 						<TouchableOpacity
-							style={[styles.radioButton, { backgroundColor: "#54ffd4" }]}
-							onPress={() => setColor("#54ffd4")}></TouchableOpacity>
+							style={[styles.radioButton, { backgroundColor: "green" }]}
+							onPress={() => setColor("green")}></TouchableOpacity>
 						<TouchableOpacity
-							style={[styles.radioButton, { backgroundColor: "#fff869" }]}
-							onPress={() => setColor("#fff869")}></TouchableOpacity>
+							style={[styles.radioButton, { backgroundColor: "yellow" }]}
+							onPress={() => setColor("yellow")}></TouchableOpacity>
 					</View>
 					<TouchableOpacity style={styles.button} onPress={signInUser}>
-						<Text>Start Chatting</Text>
+						<Text>Go to Chat</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
+			{Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" /> : null}
 		</ImageBackground>
 	);
 };
@@ -81,30 +94,25 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontWeight: "bold",
-		fontSize: 50,
-		color: "#FFFFFF",
-		marginBottom: 30,
-	},
-	input: {
-		borderColor: "#8A8F9E",
-		borderWidth: 1,
-		borderRadius: 3,
-		padding: 10,
-		width: "100%",
-		marginBottom: 20,
-	},
-	radioButton: {
-		height: 24,
-		width: 24,
-		borderRadius: 12,
+		fontSize: 30,
 	},
 	button: {
 		alignItems: "center",
-		justifyContent: "center",
-		backgroundColor: "#757083",
-		padding: 20,
-		borderRadius: 8,
-		width: "100%",
+		backgroundColor: "#DDDDDD",
+		padding: 10,
+	},
+	radioButton: {
+		backgroundColor: "black",
+		width: 30,
+		height: 30,
+		borderRadius: 15,
+	},
+	input: {
+		height: 40,
+		width: "88%",
+		margin: 12,
+		borderWidth: 3,
+		padding: 10,
 	},
 });
 
